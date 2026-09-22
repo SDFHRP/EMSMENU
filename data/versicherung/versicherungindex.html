@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Versicherungs Abteilung - LSMD</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;800&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050507;color:#fff;font-family:Inter,sans-serif;overflow-x:hidden;min-height:100dvh}
+.bg{position:fixed;inset:0;z-index:0}
+.bg::before{content:"";position:absolute;inset:0;background:radial-gradient(600px at 0% 0%,rgba(34,197,94,0.12),transparent 60%),radial-gradient(600px at 100% 100%,rgba(212,175,55,0.10),transparent 60%)}
+.bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:32px 32px;opacity:0.6}
+.wrap{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column}
+.top{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(10,10,12,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:10}
+.back-btn{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:600;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08)}
+.logo-s{width:32px;height:32px;border-radius:50%;border:1.5px solid #D4AF37}
+.brand{font-family:Rajdhani;font-weight:800;letter-spacing:0.06em;font-size:13px}
+.hero{padding:22px 18px 14px;text-align:center}
+.logo-l{width:72px;height:72px;border-radius:50%;border:2.5px solid #D4AF37;box-shadow:0 0 24px rgba(212,175,55,0.25);margin:0 auto 10px;display:block}
+.h1{font-family:Rajdhani;font-weight:800;font-size:22px;letter-spacing:0.06em;background:linear-gradient(135deg,#4ade80,#D4AF37);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:0.12em;margin-top:4px;text-transform:uppercase;font-weight:600}
+
+.grid{padding:14px 14px 0;display:grid;grid-template-columns:1fr;gap:10px;max-width:520px;margin:0 auto;width:100%}
+@media(min-width:420px){.grid{grid-template-columns:1fr 1fr}}
+.card{position:relative;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:18px 16px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-decoration:none;transition:all .18s;cursor:pointer;min-height:110px}
+.card:active{transform:scale(0.96)}
+.card:hover{border-color:rgba(212,175,55,0.22);background:rgba(255,255,255,0.07)}
+.card.g1{border-color:rgba(59,130,246,0.25);background:linear-gradient(145deg,rgba(59,130,246,0.12),rgba(255,255,255,0.05))}
+.card.g2{border-color:rgba(34,197,94,0.28);background:linear-gradient(145deg,rgba(34,197,94,0.14),rgba(255,255,255,0.05))}
+.card.g3{border-color:rgba(245,158,11,0.28);background:linear-gradient(145deg,rgba(245,158,11,0.13),rgba(255,255,255,0.05))}
+.card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08)}
+.card.g1 .card-icon{background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.25)}
+.card.g2 .card-icon{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.25)}
+.card.g3 .card-icon{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.25)}
+.card-title{font-family:Rajdhani;font-weight:700;font-size:16px;line-height:1.15;color:#fff}
+.card-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px}
+.card-dot{position:absolute;top:12px;right:12px;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.18)}
+.card.g1 .card-dot{background:#3b82f6;box-shadow:0 0 8px #3b82f6}
+.card.g2 .card-dot{background:#22c55e;box-shadow:0 0 8px #22c55e}
+.card.g3 .card-dot{background:#f59e0b;box-shadow:0 0 8px #f59e0b}
+
+.section{max-width:520px;margin:18px auto 0;width:calc(100% - 28px);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:18px;display:none}
+.section.active{display:block;animation:fade .2s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.sec-title{font-family:Rajdhani;font-weight:800;font-size:16px;color:#fff}
+.input{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:10px}
+.input:focus{border-color:#D4AF37}
+.input::placeholder{color:rgba(255,255,255,0.35)}
+.btn{width:100%;padding:14px;border-radius:12px;border:none;font-family:Rajdhani;font-weight:800;font-size:14px;letter-spacing:0.04em;cursor:pointer;transition:all .18s}
+.btn:active{transform:scale(0.97)}
+.btn-blue{background:linear-gradient(135deg,#3b82f6,#1e40af);color:#fff;box-shadow:0 0 16px rgba(59,130,246,0.25)}
+.btn-green{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;box-shadow:0 0 16px rgba(34,197,94,0.25)}
+.btn-gold{background:linear-gradient(135deg,#D4AF37,#f59e0b);color:#000}
+.result{margin-top:14px;padding:14px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);font-size:13px;line-height:1.5;display:none}
+.result.show{display:block}
+.list-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.list-item b{font-size:13px;color:#fff}
+.list-item span{font-size:11px;color:rgba(255,255,255,0.5)}
+.del{width:32px;height:32px;border-radius:8px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.25);color:#ef4444;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.spacer{height:90px}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="top">
+    <a href="index.html" class="back-btn">← Menü</a>
+    <div style="display:flex;align-items:center;gap:8px">
+      <img src="logo.png" class="logo-s" style="width:28px;height:28px">
+      <div class="brand">VERSICHERUNG</div>
+    </div>
+    <div style="width:56px"></div>
+  </div>
+
+  <div class="hero">
+    <img src="logo.png" class="logo-l">
+    <div class="h1">VERSICHERUNGS ABTEILUNG</div>
+    <div class="sub">LSMD • Verwaltung & Abfrage</div>
+  </div>
+
+  <div class="grid">
+    <div class="card g1" onclick="openSec('abfrage')">
+      <div class="card-dot"></div>
+      <div class="card-icon">🔍</div>
+      <div>
+        <div class="card-title">Abfrage</div>
+        <div class="card-sub">Versicherung prüfen</div>
+      </div>
+    </div>
+    <div class="card g2" onclick="openSec('erstellen')">
+      <div class="card-dot"></div>
+      <div class="card-icon">➕</div>
+      <div>
+        <div class="card-title">Erstellen</div>
+        <div class="card-sub">Neu einfügen</div>
+      </div>
+    </div>
+    <div class="card g3" onclick="openSec('verwalten')" style="grid-column:1/-1;flex-direction:row;align-items:center;min-height:80px">
+      <div class="card-dot"></div>
+      <div class="card-icon">⚙️</div>
+      <div>
+        <div class="card-title">Verwalten</div>
+        <div class="card-sub">Alle Versicherungen • Bearbeiten & Löschen</div>
+      </div>
+      <div style="margin-left:auto;color:rgba(255,255,255,0.3);font-size:18px">→</div>
+    </div>
+  </div>
+
+  <!-- ABFRAGE SECTION -->
+  <div id="sec-abfrage" class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.25)">🔍</div>
+      <div class="sec-title">Versicherung Abfragen</div>
+    </div>
+    <input id="q-name" class="input" placeholder="IC Name oder Versicherungs-Nr. eingeben">
+    <button class="btn btn-blue" onclick="abfragen()">ABFRAGEN</button>
+    <div id="q-result" class="result"></div>
+  </div>
+
+  <!-- ERSTELLEN SECTION -->
+  <div id="sec-erstellen" class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.25)">➕</div>
+      <div class="sec-title">Neue Versicherung Erstellen</div>
+    </div>
+    <input id="e-name" class="input" placeholder="IC Name (Vor- & Nachname)">
+    <input id="e-geb" class="input" type="date" style="color-scheme:dark">
+    <select id="e-typ" class="input">
+      <option value="">Versicherungsart wählen</option>
+      <option value="Basis">Basis - Standard</option>
+      <option value="Premium">Premium - Vollschutz</option>
+      <option value="Familie">Familie - Familien Tarif</option>
+      <option value="Privat">Privat - Privatpatient</option>
+    </select>
+    <input id="e-gueltig" class="input" type="date" style="color-scheme:dark">
+    <button class="btn btn-green" onclick="erstellen()">ERSTELLEN & SPEICHERN</button>
+    <div id="e-result" class="result"></div>
+  </div>
+
+  <!-- VERWALTEN SECTION -->
+  <div id="sec-verwalten" class="section">
+    <div class="sec-head">
+      <div class="sec-icon" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.25)">⚙️</div>
+      <div class="sec-title">Verwalten</div>
+      <div style="margin-left:auto;font-size:11px;color:rgba(255,255,255,0.4)" id="count-badge">0 Einträge</div>
+    </div>
+    <div id="v-list"></div>
+    <button class="btn" style="margin-top:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.6)" onclick="clearAll()">Alle Löschen</button>
+  </div>
+
+  <div class="spacer"></div>
+</div>
+
+<script>
+let versicherungen = JSON.parse(localStorage.getItem('lsmd_versicherungen')||'[]');
+
+function openSec(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.getElementById('sec-'+name).scrollIntoView({behavior:'smooth',block:'start'});
+  if(name==='verwalten') renderList();
+}
+
+function abfragen(){
+  const q = document.getElementById('q-name').value.toLowerCase().trim();
+  const res = document.getElementById('q-result');
+  if(!q){ res.innerHTML='Bitte Namen oder Nr. eingeben'; res.classList.add('show'); return; }
+  const found = versicherungen.filter(v=> v.name.toLowerCase().includes(q) || v.nr.toLowerCase().includes(q));
+  if(found.length===0){
+    res.innerHTML=`❌ Keine Versicherung gefunden für <b>${q}</b><br><span style="color:rgba(255,255,255,0.5)">Tipp: Prüfe Schreibweise oder erstelle neue.</span>`;
+  } else {
+    res.innerHTML = found.map(v=>`✅ <b>${v.name}</b><br>Nr: ${v.nr}<br>Typ: ${v.typ}<br>Gültig bis: ${v.gueltig}<br>Geb: ${v.geb}<br><br>`).join('');
+  }
+  res.classList.add('show');
+}
+
+function erstellen(){
+  const name = document.getElementById('e-name').value.trim();
+  const geb = document.getElementById('e-geb').value;
+  const typ = document.getElementById('e-typ').value;
+  const gueltig = document.getElementById('e-gueltig').value;
+  const res = document.getElementById('e-result');
+  if(!name || !geb || !typ || !gueltig){ res.innerHTML='❌ Bitte alle Felder ausfüllen'; res.classList.add('show'); return; }
+  const nr = 'LSMD-'+Math.floor(100000+Math.random()*900000);
+  const eintrag = {name, geb, typ, gueltig, nr, erstellt: new Date().toLocaleDateString('de-DE')};
+  versicherungen.push(eintrag);
+  localStorage.setItem('lsmd_versicherungen', JSON.stringify(versicherungen));
+  res.innerHTML=`✅ Versicherung erstellt!<br><b>${name}</b><br>Nr: ${nr}<br>Typ: ${typ}<br>Gültig bis: ${gueltig}`;
+  res.classList.add('show');
+  document.getElementById('e-name').value=''; document.getElementById('e-geb').value=''; document.getElementById('e-typ').value=''; document.getElementById('e-gueltig').value='';
+  renderList();
+}
+
+function renderList(){
+  const list = document.getElementById('v-list');
+  const badge = document.getElementById('count-badge');
+  badge.textContent = versicherungen.length + ' Einträge';
+  if(versicherungen.length===0){ list.innerHTML='<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.4);font-size:13px">Keine Versicherungen gespeichert<br>Erstelle zuerst eine</div>'; return; }
+  list.innerHTML = versicherungen.map((v,i)=>`
+    <div class="list-item">
+      <div>
+        <b>${v.name}</b><br>
+        <span>${v.nr} • ${v.typ} • bis ${v.gueltig}</span>
+      </div>
+      <div class="del" onclick="delVers(${i})">✕</div>
+    </div>
+  `).join('');
+}
+
+function delVers(i){
+  if(!confirm('Wirklich löschen?')) return;
+  versicherungen.splice(i,1);
+  localStorage.setItem('lsmd_versicherungen', JSON.stringify(versicherungen));
+  renderList();
+}
+
+function clearAll(){
+  if(!confirm('Alle Versicherungen löschen?')) return;
+  versicherungen=[]; localStorage.setItem('lsmd_versicherungen', JSON.stringify(versicherungen)); renderList();
+}
+
+// Auto open first section if no data
+if(versicherungen.length===0){ /* nichts */ }
+</script>
+</body>
+</html>
