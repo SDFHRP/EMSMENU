@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Versicherungs Abfrage - LSMD</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;800&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050507;color:#fff;font-family:Inter,sans-serif;overflow-x:hidden;min-height:100dvh}
+.bg{position:fixed;inset:0;z-index:0}
+.bg::before{content:"";position:absolute;inset:0;background:radial-gradient(600px at 0% 0%,rgba(59,130,246,0.14),transparent 60%),radial-gradient(600px at 100% 100%,rgba(212,175,55,0.10),transparent 60%)}
+.bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:32px 32px;opacity:0.6}
+.wrap{position:relative;z-index:1;min-height:100dvh;display:flex;flex-direction:column}
+.top{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(10,10,12,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:10}
+.back-btn{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:600;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08)}
+.hero{padding:20px 18px 12px;text-align:center}
+.logo-l{width:68px;height:68px;border-radius:50%;border:2.5px solid #D4AF37;box-shadow:0 0 20px rgba(212,175,55,0.25);margin:0 auto 10px;display:block}
+.h1{font-family:Rajdhani;font-weight:800;font-size:20px;letter-spacing:0.06em;background:linear-gradient(135deg,#60a5fa,#D4AF37);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:0.12em;margin-top:4px;text-transform:uppercase;font-weight:600}
+.card-main{max-width:520px;margin:12px auto 0;width:calc(100% - 28px);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:18px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.25)}
+.sec-title{font-family:Rajdhani;font-weight:800;font-size:16px;color:#fff}
+.label{font-size:11px;font-weight:700;letter-spacing:0.08em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin:12px 0 6px 2px}
+.input{width:100%;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 14px;color:#fff;font-size:16px;outline:none}
+.input:focus{border-color:#3b82f6}
+.btn{width:100%;padding:15px;border-radius:12px;border:none;font-family:Rajdhani;font-weight:800;font-size:14px;cursor:pointer;margin-top:14px}
+.btn-blue{background:linear-gradient(135deg,#3b82f6,#1e40af);color:#fff;box-shadow:0 0 16px rgba(59,130,246,0.25)}
+.result{margin-top:16px;border-radius:16px;padding:16px;display:none}
+.result.show{display:block}
+.result-aktiv{background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(16,185,129,0.08));border:1px solid rgba(34,197,94,0.3)}
+.result-inaktiv{background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(185,28,28,0.08));border:1px solid rgba(239,68,68,0.3)}
+.result-notfound{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)}
+.badge{display:inline-flex;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800}
+.badge-aktiv{background:rgba(34,197,94,0.2);border:1px solid rgba(34,197,94,0.35);color:#4ade80}
+.badge-inaktiv{background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.35);color:#f87171}
+.badge-standard{background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.3);color:#60a5fa}
+.badge-premium{background:rgba(212,175,55,0.2);border:1px solid rgba(212,175,55,0.3);color:#f9e076}
+.detail{margin-top:12px;font-size:13px;line-height:1.6;color:rgba(255,255,255,0.8)}
+.detail-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.config{max-width:520px;margin:14px auto 0;width:calc(100% - 28px);background:rgba(212,175,55,0.06);border:1px dashed rgba(212,175,55,0.25);border-radius:16px;padding:14px}
+.config-title{font-family:Rajdhani;font-weight:700;font-size:12px;color:#D4AF37;margin-bottom:8px}
+.config-text{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.5}
+.spacer{height:90px}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="top">
+    <a href="versicherung.html" class="back-btn">← Versicherung</a>
+    <div style="font-family:Rajdhani;font-weight:800;font-size:12px">ABFRAGE LIVE</div>
+    <div style="width:56px"></div>
+  </div>
+  <div class="hero">
+    <img src="logo.png" class="logo-l">
+    <div class="h1">VERSICHERUNG PRÜFEN</div>
+    <div class="sub">Standard & Premium • 30 Tage Laufzeit • Google Sheets</div>
+  </div>
+  <div class="card-main">
+    <div class="sec-head"><div class="sec-icon">🔍</div><div class="sec-title">Status Abfragen</div></div>
+    <div class="label">IC Name</div>
+    <input id="inp-name" class="input" placeholder="z.B. Max Mustermann">
+    <div class="label">Geburtsdatum</div>
+    <input id="inp-geb" class="input" type="date" style="color-scheme:dark">
+    <button id="btn-query" class="btn btn-blue" onclick="querySheet()">STATUS ABFRAGEN</button>
+    <div id="result" class="result"></div>
+  </div>
+  <div class="config">
+    <div class="config-title">📊 GOOGLE SHEETS - 2 VERSICHERUNGEN • 30 TAGE</div>
+    <div class="config-text">
+      <b>Spalten:</b> A: IC Name | B: Geburtsdatum (JJJJ-MM-TT) | C: Nr | D: Typ (Standard/Premium) | E: Erstellt am | F: Gültig bis (+30 Tage) | G: Status<br><br>
+      <b>Beispiel:</b> Max Mustermann | 1995-05-12 | LSMD-123456 | Premium | 2025-12-01 | 2025-12-31 | Aktiv<br>
+      <b>Laufzeit:</b> Automatisch 30 Tage ab Erstellungsdatum<br>
+      <b>Link:</b> Datei → Im Web veröffentlichen → CSV → Link in SHEET_URL einfügen
+    </div>
+  </div>
+  <div class="spacer"></div>
+</div>
+<script>
+const SHEET_URL = "";
+const DEMO_DATA = [
+  {name:"Max Mustermann", geb:"1995-05-12", nr:"LSMD-123456", typ:"Premium", erstellt:"2025-12-01", gueltig:"2025-12-31", status:"Aktiv"},
+  {name:"Anna Schmidt", geb:"1998-03-22", nr:"LSMD-234567", typ:"Standard", erstellt:"2025-11-10", gueltig:"2025-12-10", status:"Aktiv"},
+  {name:"John Miller", geb:"1990-11-08", nr:"LSMD-345678", typ:"Premium", erstellt:"2025-10-01", gueltig:"2025-10-31", status:"Inaktiv"},
+  {name:"Lisa Meier", geb:"2000-01-30", nr:"LSMD-456789", typ:"Standard", erstellt:"2025-12-15", gueltig:"2026-01-14", status:"Aktiv"},
+];
+function normalizeDate(input){
+  if(!input) return "";
+  input = input.trim();
+  if(input.includes("-") && input.length===10) return input;
+  if(input.includes(".")){
+    const p=input.split(".");
+    if(p.length===3) return `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+  }
+  return input;
+}
+function parseCSV(text){
+  const lines=text.trim().split("\n");
+  if(lines.length<2) return [];
+  const headers=lines[0].split(",").map(h=>h.trim().toLowerCase());
+  const iN=headers.findIndex(h=>h.includes("name"));
+  const iG=headers.findIndex(h=>h.includes("geb"));
+  const iNr=headers.findIndex(h=>h.includes("nr"));
+  const iT=headers.findIndex(h=>h.includes("typ"));
+  const iE=headers.findIndex(h=>h.includes("erstellt"));
+  const iGu=headers.findIndex(h=>h.includes("gueltig")||h.includes("gültig"));
+  const iS=headers.findIndex(h=>h.includes("status"));
+  const data=[];
+  for(let i=1;i<lines.length;i++){
+    const cols=lines[i].split(",").map(c=>c.trim().replace(/^"|"$/g,''));
+    if(cols.length<2) continue;
+    data.push({
+      name: cols[iN>=0?iN:0]||"",
+      geb: normalizeDate(cols[iG>=0?iG:1]||""),
+      nr: cols[iNr>=0?iNr:2]||"",
+      typ: cols[iT>=0?iT:3]||"Standard",
+      erstellt: normalizeDate(cols[iE>=0?iE:4]||""),
+      gueltig: normalizeDate(cols[iGu>=0?iGu:5]||""),
+      status: cols[iS>=0?iS:6]||""
+    });
+  }
+  return data;
+}
+async function fetchSheet(){
+  if(!SHEET_URL) return DEMO_DATA;
+  try{
+    const resp=await fetch(SHEET_URL);
+    const text=await resp.text();
+    return parseCSV(text);
+  }catch(e){
+    return DEMO_DATA;
+  }
+}
+async function querySheet(){
+  const nameInput=document.getElementById('inp-name').value.trim();
+  const gebInput=document.getElementById('inp-geb').value;
+  const resultDiv=document.getElementById('result');
+  const btn=document.getElementById('btn-query');
+  if(!nameInput||!gebInput){resultDiv.innerHTML='❌ Name und Geburtsdatum eingeben';resultDiv.className='result show result-notfound';return;}
+  btn.disabled=true;btn.textContent='WIRD GEPRÜFT...';
+  const data=await fetchSheet();
+  const searchName=nameInput.toLowerCase();
+  const searchGeb=normalizeDate(gebInput);
+  const found=data.find(row=>{
+    const rn=(row.name||"").toLowerCase();
+    const rg=normalizeDate(row.geb||"");
+    return rn.includes(searchName) && rg===searchGeb;
+  });
+  btn.disabled=false;btn.textContent='STATUS ABFRAGEN';
+  if(found){
+    let isAktiv=(found.status||"").toLowerCase().includes("aktiv") && !(found.status||"").toLowerCase().includes("inaktiv");
+    let abgelaufen=false;
+    try{
+      const bis=new Date(found.gueltig);
+      if(bis < new Date()) abgelaufen=true;
+    }catch(e){}
+    const aktivFinal=isAktiv && !abgelaufen;
+    resultDiv.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-family:Rajdhani;font-weight:800">ERGEBNIS</div>
+        <div style="display:flex;gap:6px">
+          <div class="badge ${found.typ.toLowerCase().includes('premium')?'badge-premium':'badge-standard'}">${found.typ.toUpperCase()}</div>
+          <div class="badge ${aktivFinal?'badge-aktiv':'badge-inaktiv'}">${aktivFinal?'AKTIV ✅':'INAKTIV ❌'}</div>
+        </div>
+      </div>
+      <div class="detail">
+        <div class="detail-row"><span>Name</span><b>${found.name}</b></div>
+        <div class="detail-row"><span>Geburt</span><b>${found.geb}</b></div>
+        <div class="detail-row"><span>Nr</span><b>${found.nr}</b></div>
+        <div class="detail-row"><span>Typ</span><b>${found.typ} (30 Tage)</b></div>
+        <div class="detail-row"><span>Erstellt</span><b>${found.erstellt}</b></div>
+        <div class="detail-row"><span>Gültig bis</span><b>${found.gueltig}</b></div>
+        <div class="detail-row"><span>Status</span><b>${found.status}</b></div>
+      </div>
+      ${abgelaufen?'<div style="margin-top:10px;font-size:11px;color:#f87171">⚠️ 30 Tage abgelaufen - Verlängerung nötig</div>':`<div style="margin-top:10px;font-size:11px;color:#4ade80">✅ Noch ${Math.ceil((new Date(found.gueltig)-new Date())/86400000)} Tage gültig</div>`}
+    `;
+    resultDiv.className='result show '+(aktivFinal?'result-aktiv':'result-inaktiv');
+  }else{
+    resultDiv.innerHTML=`<div style="font-weight:700">❌ Nicht gefunden</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px">Für ${nameInput} - ${gebInput}<br>Nicht in Google Sheets</div>`;
+    resultDiv.className='result show result-notfound';
+  }
+}
+</script>
+</body>
+</html>
